@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import os
 
 # Set parameters here 
-INPUT_SIZE = (224, 224)
+INPUT_SIZE = (224,224)
 mapping = {'covid': 0, 'non_covid': 1}
 
 # train/valid/test .txt files
@@ -45,6 +45,7 @@ for i in range(len(testfiles)):
     imgpath = test_i[1]
     img = cv2.imread(os.path.join(r'./test', imgpath))
     img = cv2.resize(img, INPUT_SIZE) # resize
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = img.astype('float32') / 255.0
     x_test.append(img)
     y_test.append(mapping[test_i[2]])
@@ -56,6 +57,7 @@ for i in range(len(validfiles)):
     imgpath = valid_i[1]
     img = cv2.imread(os.path.join(r'./valid', imgpath))
     img = cv2.resize(img, INPUT_SIZE) # resize
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = img.astype('float32') / 255.0
     x_valid.append(img)
     y_valid.append(mapping[valid_i[2]])
@@ -67,6 +69,7 @@ for i in range(len(trainfiles)):
     imgpath = train_i[1]
     img = cv2.imread(os.path.join(r'./train', imgpath))
     img = cv2.resize(img, INPUT_SIZE) # resize
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = img.astype('float32') / 255.0
     x_train.append(img)
     y_train.append(mapping[train_i[2]])
