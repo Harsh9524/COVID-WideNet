@@ -10,9 +10,9 @@ INPUT_SIZE = (224, 224)
 mapping = {'covid': 0, 'non_covid': 1}
 
 # train/valid/test .txt files
-train_filepath = 'train_split_v3.txt'
-valid_filepath = 'valid_split_v3.txt'
-test_filepath = 'test_split_v3.txt'
+train_filepath = 'train/train_split_v3.txt'
+valid_filepath = 'valid/valid_split_v3.txt'
+test_filepath = 'test/test_split_v3.txt'
 
 # load in the train and test files
 file = open(train_filepath, 'r') 
@@ -43,7 +43,7 @@ y_test = []
 for i in range(len(testfiles)):
     test_i = testfiles[i].split()
     imgpath = test_i[1]
-    img = cv2.imread(os.path.join(r'./data/test', imgpath))
+    img = cv2.imread(os.path.join(r'./test', imgpath))
     img = cv2.resize(img, INPUT_SIZE) # resize
     img = img.astype('float32') / 255.0
     x_test.append(img)
@@ -54,7 +54,7 @@ print('Shape of test images: ', x_test[0].shape)
 for i in range(len(validfiles)):
     valid_i = validfiles[i].split()
     imgpath = valid_i[1]
-    img = cv2.imread(os.path.join(r'./data/valid', imgpath))
+    img = cv2.imread(os.path.join(r'./valid', imgpath))
     img = cv2.resize(img, INPUT_SIZE) # resize
     img = img.astype('float32') / 255.0
     x_valid.append(img)
@@ -65,7 +65,7 @@ print('Shape of valid images: ', x_valid[0].shape)
 for i in range(len(trainfiles)):
     train_i = trainfiles[i].split()
     imgpath = train_i[1]
-    img = cv2.imread(os.path.join(r'./data/train', imgpath))
+    img = cv2.imread(os.path.join(r'./train', imgpath))
     img = cv2.resize(img, INPUT_SIZE) # resize
     img = img.astype('float32') / 255.0
     x_train.append(img)
