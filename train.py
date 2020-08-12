@@ -54,7 +54,7 @@ train_labels = to_categorical(y_train, num_classes=2)
 def build_model(calc_margin):
     print("Building model...")
     number_of_classes = 2
-    input_shape = (64, 64, 1)
+    input_shape = (224, 224, 1)
 
     x = layers.Input(shape=input_shape)
     '''
