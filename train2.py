@@ -55,7 +55,7 @@ def build_model(calc_margin):
     dimension of these capsules is 16.
     '''
     capLayer2 = CapsuleLayer(num_capsule=2, dim_capsule=16, routings=3,
-                             name="ThirdLayer")(primaryCaps)
+                             name="FifthLayer")(primaryCaps)
 
     out_caps = Length(name='capsnet')(capLayer2)
 
