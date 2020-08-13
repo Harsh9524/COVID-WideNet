@@ -23,7 +23,7 @@ train_labels = to_categorical(y_train, num_classes=2)
 def build_model(calc_margin):
     print("Building model...")
     number_of_classes = 2
-    input_shape = (64,64, 1)
+    input_shape = (224,224, 1)
 
     x = layers.Input(shape=input_shape)
     '''
@@ -33,11 +33,11 @@ def build_model(calc_margin):
     Second (First?) layer is a convolutional layer with 64 × 9 × 9 filters
     and stride of 1 which leads to 64 feature maps of size 56×56.
     '''
-    conv1 = layers.Conv2D(64, (3, 3), activation='relu',
+    conv1 = layers.Conv2D(64, (9, 9), activation='relu',
                           name="FirstLayer")(x)
-    conv2 = layers.Conv2D(128, (3, 3), activation='relu',
+    conv2 = layers.Conv2D(128, (9, 9), activation='relu',
                           name="SecondLayer")(x) 
-    conv3 = layers.Conv2D(256, (3, 3), activation='relu',
+    conv3 = layers.Conv2D(256, (9, 9), activation='relu',
                           name="ThirdLayer")(x)                         
     '''
     The second layer is a Primary Capsule layer resulting from
@@ -101,7 +101,7 @@ def create_generator(train_data, train_labels, batch):
 batch = 32
 def train(train_data, train_labels, num_epoch, use_margin):
     results = []
-    batch = 32
+    batch = 8
     checkpointer = ModelCheckpoint(filepath='CapsNet.h5',
                                    monitor='val_capsnet_acc', save_best_only=True)
     early_stopping = EarlyStopping(monitor='val_capsnet_acc', patience=4)
