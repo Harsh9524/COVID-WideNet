@@ -15,39 +15,6 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 
-# def prepare_data(full_image):
-#     train_data, train_labels = [], []
-#     list_files = []
-#     folders = ['RawData/brainTumorDataPublic_1766',
-#                'RawData/brainTumorDataPublic_7671532',
-#                'RawData/brainTumorDataPublic_15332298',
-#                'RawData/brainTumorDataPublic_22993064']
-#     print("Preparing the brain tumor data...")
-#     for fold in folders:
-#         list_files += glob.glob(fold + "/*.mat")
-#     random.shuffle(list_files)
-#     for file in list_files:
-#         with h5py.File(file) as f:
-#             img = f["cjdata/image"]
-#             mask = f["cjdata/tumorMask"]
-#             # Labels are 1-indexed
-#             train_labels.append(int(f["cjdata/label"][0]) - 1)
-#             img = np.array(img)
-#             mask = np.array(mask)
-#             # Normalize to 0.0 to 1.0
-#             img = img * (1 / np.max(np.max(img)))
-#             seg_img = np.multiply(img, mask) if full_image is False else img
-#             seg_img = transform.resize(seg_img, (64, 64))
-#             train_data.append(seg_img)
-#     train_data = np.asarray(train_data)
-#     print("train_data.shape = ", train_data.shape)
-#     train_labels = np.asarray(train_labels)
-#     train_labels = to_categorical(train_labels, num_classes=3)
-#     print("train_labels.shape = ", train_labels.shape)
-#     print("Done preparing data")
-#     return train_data, train_labels
-
-
 train_data = np.load("x_train.npy")
 train_data = np.expand_dims(train_data, axis=3)
 y_train = np.load("y_train.npy")
@@ -69,7 +36,9 @@ def build_model(calc_margin):
     conv1 = layers.Conv2D(64, (3, 3), activation='relu',
                           name="FirstLayer")(x)
     conv2 = layers.Conv2D(128, (3, 3), activation='relu',
-                          name="SecondLayer")(x)                      
+                          name="SecondLayer")(x) 
+    conv3 = layers.Conv2D(256, (3, 3), activation='relu',
+                          name="ThirdLayer")(x)                         
     '''
     The second layer is a Primary Capsule layer resulting from
     256×9×9 convolutions with strides of 2.
@@ -77,7 +46,7 @@ def build_model(calc_margin):
     which has feature maps of size 24×24 (i.e., each Component
     Capsule contains 24 × 24 localized individual Capsules).
     '''
-    primaryCaps = PrimaryCap(inputs=conv1, dim_capsule=8,
+    primaryCaps = PrimaryCap(inputs=conv3, dim_capsule=8,
                              n_channels=32, kernel_size=9, strides=2,
                              padding='valid')
     '''
@@ -115,61 +84,6 @@ def build_model(calc_margin):
 
     return train_model
 
-
-# def build_separable_model(calc_margin):
-#     print("Building model...")
-#     number_of_classes = 2
-#     input_shape = (64, 64, 1)
-
-#     x = layers.Input(shape=input_shape)
-#     # Trying separable Convolutions, but the accuracy dropped 5%
-#     conv1 = layers.SeparableConv2D(64, (9, 9), activation='relu',
-#                                    name="SepLayer")(x)
-#     '''
-#     The second layer is a Primary Capsule layer resulting from
-#     256×9×9 convolutions with strides of 2.
-#     This layer consists of 32 capsules with dimension of 8 each of
-#     which has feature maps of size 24×24 (i.e., each Component
-#     Capsule contains 24 × 24 localized individual Capsules).
-#     '''
-#     primaryCaps = PrimaryCap(inputs=conv1, dim_capsule=8,
-#                              n_channels=32, kernel_size=9, strides=2,
-#                              padding='valid')
-#     '''
-#     Final capsule layer includes 3 capsules, referred to as “Class
-#     Capsules,’ ’one for each type of candidate brain tumor. The
-#     dimension of these capsules is 16.
-#     '''
-#     capLayer2 = CapsuleLayer(num_capsule=2, dim_capsule=16, routings=2,
-#                              name="ThirdLayer")(primaryCaps)
-
-#     out_caps = Length(name='capsnet')(capLayer2)
-
-#     # Decoder network.
-#     y = layers.Input(shape=(number_of_classes,))
-#     # The true label is used to mask the output of capsule layer. For training
-#     masked_by_y = Mask()([capLayer2, y])
-
-#     # Shared Decoder model in training and prediction
-#     decoder = models.Sequential(name='decoder')
-#     decoder.add(layers.Dense(512, activation='relu',
-#                              input_dim=16 * number_of_classes))
-#     decoder.add(layers.Dense(1024, activation='relu'))
-#     decoder.add(layers.Dense(np.prod(input_shape), activation='sigmoid'))
-#     decoder.add(layers.Reshape(target_shape=input_shape, name='out_recon'))
-#     train_model = models.Model([x, y], [out_caps, decoder(masked_by_y)])
-
-#     if calc_margin is True:
-#         loss_func = [margin_loss, 'mse']
-#     else:
-#         loss_func = ['mse']
-#     train_model.compile(optimizer="rmsprop", loss=loss_func,
-#                         metrics=['accuracy'])
-#     train_model.summary()
-
-#     return train_model
-
-
 def margin_loss(y_true, y_pred):
     L = y_true * K.square(K.maximum(0., 0.9 - y_pred))
     L += 0.5 * (1 - y_true) * K.square(K.maximum(0., y_pred - 0.1))
@@ -183,8 +97,6 @@ def create_generator(train_data, train_labels, batch):
         x_batch, y_batch = generator.next()
         # print("y_batch", y_batch)
         yield ([x_batch, y_batch], [y_batch, x_batch])
-
-
 
 batch = 32
 def train(train_data, train_labels, num_epoch, use_margin):
@@ -218,100 +130,6 @@ def train(train_data, train_labels, num_epoch, use_margin):
                               early_stopping])
     results.append(hst.history)
     return results
-
-
-
-
-# def k_fold_validation(train_data, train_labels, num_epoch, num_folds,
-#                       try_sep_conv, use_margin):
-#     print("Running k-fold validation...")
-#     fold_len = train_data.shape[0] // num_folds
-#     # print("fold_len", fold_len)
-
-#     checkpointer = ModelCheckpoint(filepath='CapsNet.h5',
-#                                    monitor='val_capsnet_acc',
-#                                    save_best_only=True)
-#     early_stopping = EarlyStopping(monitor='val_capsnet_acc', patience=4)
-
-#     results = []
-#     batch = 32
-#     for fold in range(num_folds):
-#         if try_sep_conv is False:
-#             model = build_model(use_margin)
-#             print(model.summary())
-#         else:
-#             model = build_separable_model(use_margin)
-#             print(model.summary())
-#         print("++++++++++++++++++++\nProcessing fold {}..."
-#               .format(fold + 1), end='')
-#         print("\n++++++++++++++++++++")
-#         # val_data = train_data[fold * fold_len:(fold + 1) * fold_len]
-#         # val_data = np.expand_dims(val_data, axis=3)
-#         # val_labels = train_labels[fold * fold_len:(fold + 1) * fold_len]
-
-#         val_data = np.load("x_valid.npy")
-#         val_data = np.expand_dims(val_data, axis=3)
-#         y_valid = np.load("y_valid.npy")
-#         val_labels = to_categorical(y_valid, num_classes=2)
-
-
-#         train_slice = (train_data[:fold * fold_len],
-#                        train_data[(fold + 1) * fold_len:])
-#         partial_train_data = np.concatenate(train_slice)
-#         partial_train_data = np.expand_dims(partial_train_data, axis=3)
-#         label_slice = (train_labels[:fold * fold_len],
-#                        train_labels[(fold + 1) * fold_len:])
-#         partial_train_labels = np.concatenate(label_slice)
-
-#         print("Training data shape: {}".format(partial_train_data.shape))
-#         print("Training Labels shape: {}".format(partial_train_labels.shape))
-#         print("Validation data shape: {}".format(val_data.shape))
-#         print("Validation Labels shape: {}".format(val_labels.shape))
-#         train_gen = create_generator(partial_train_data,
-#                                      partial_train_labels,
-#                                      batch)
-#         steps_per_epoch = len(partial_train_data) // batch
-#         hst = model.fit_generator(train_gen,
-#                                   validation_data=([val_data, val_labels],
-#                                                    [val_labels, val_data]),
-#                                   steps_per_epoch=steps_per_epoch,
-#                                   validation_steps=len(val_data) // batch,
-#                                   epochs=num_epoch,
-#                                   verbose=1,
-#                                   callbacks=[checkpointer,
-#                                              early_stopping])
-#         results.append(hst.history)
-
-#     return results
-
-
-# def plt_history(results, num_epoch):
-#     # val_acc val_loss in the same figure
-#     # train_acc train_loss in the same figure
-#     clr = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
-#     # Plot the val_capsnet_acc vs val_capsnet_loss
-#     for i, history in enumerate(results):
-#         num_epochs = np.arange(1, len(history["val_capsnet_acc"]) + 1)
-#         plt.plot(num_epochs, history["val_capsnet_acc"], clr[i])
-#         plt.plot(num_epochs, history["val_capsnet_loss"], clr[i])
-#     # Acquire the average accuracy for the cross-fold validation end
-#     list_acc = np.array([x["val_capsnet_acc"][-1] for x in results])
-#     print("Average K-Fold Validation Accuracy: {}"
-#           .format(np.average(list_acc)))
-#     print("Array of Accuracies: {}".format(list_acc))
-#     plt.xlabel("Epoch")
-#     plt.ylabel("Validation CapsNet Acc/Loss")
-#     plt.savefig("val_capsnet_acc-loss.png")
-#     # Plot the capsnet_acc vs capsnet_loss
-#     plt.figure(2)
-#     for i, history in enumerate(results):
-#         num_epochs = np.arange(1, len(history["capsnet_acc"]) + 1)
-#         plt.plot(num_epochs, history["capsnet_acc"], clr[i])
-#         plt.plot(num_epochs, history["capsnet_loss"], clr[i])
-#     plt.xlabel("Epoch")
-#     plt.ylabel("Training CapsNet Acc/Loss")
-#     plt.savefig("capsnet_acc-loss.png")
-
 
 def main():
     # full_image = False
