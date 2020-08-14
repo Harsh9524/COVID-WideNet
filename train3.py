@@ -82,7 +82,7 @@ def train(model, data, args):
     :return: The trained model
     """
     # unpacking the data
-    (x_train, y_train), (x_test, y_test) = data
+    x_train, y_train, x_test, y_test = data
 
     # callbacks
     log = callbacks.CSVLogger(args.save_dir + '/log.csv')
@@ -180,7 +180,7 @@ def load_covid():
     x_test = np.load("x_test.npy")
     x_test = np.expand_dims(x_test, axis=3)
     y_test = np.load("y_test.npy")
-    y_test = to_categorical(y_train, num_classes=2)
+    y_test = to_categorical(y_test, num_classes=2)
 
     # x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.
     # x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.
@@ -237,9 +237,10 @@ if __name__ == "__main__":
     if args.weights is not None:  # init the model weights with provided one
         model.load_weights(args.weights)
     if not args.testing:
-        train(model=model, data=((x_train, y_train), (x_test, y_test)), args=args)
+        train(model=model, data=(x_train, y_train, x_test, y_test), args=args)
     else:  # as long as weights are given, will run testing
         if args.weights is None:
             print('No weights are provided. Will test using random initialized weights.')
         manipulate_latent(manipulate_model, (x_test, y_test), args)
         test(model=eval_model, data=(x_test, y_test), args=args)
+
