@@ -121,6 +121,7 @@ def train(model, data, args):
                                            rescale=None, 
                                            preprocessing_function=None,
                                            data_format=None)  # shift up to 2 pixel for MNIST
+        train_datagen.fit(x)
         generator = train_datagen.flow(x, y, batch_size=batch_size)
         while 1:
             x_batch, y_batch = generator.next()
