@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import os
 
 # Set parameters here 
-INPUT_SIZE = (224,224)
+INPUT_SIZE = (64,64)
 mapping = {'covid': 0, 'non_covid': 1}
 
 # train/valid/test .txt files
