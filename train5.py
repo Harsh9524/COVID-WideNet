@@ -1,27 +1,10 @@
-"""
-Keras implementation of CapsNet in Hinton's paper Dynamic Routing Between Capsules.
-The current version maybe only works for TensorFlow backend. Actually it will be straightforward to re-write to TF code.
-Adopting to other backends should be easy, but I have not tested this. 
-Usage:
-       python CapsNet.py
-       python CapsNet.py --epochs 100
-       python CapsNet.py --epochs 100 --num_routing 3
-       ... ...
-       
-Result:
-    Validation accuracy > 99.5% after 20 epochs. Converge to 99.66% after 50 epochs.
-    About 110 seconds per epoch on a single GTX1070 GPU card
-    
-Author: Xifeng Guo, E-mail: `guoxifeng1990@163.com`, Github: `https://github.com/XifengGuo/CapsNet-Keras`
-"""
-
 import numpy as np
 from keras import layers, models, optimizers
 from keras import backend as K
 from keras.utils import to_categorical
 from capsulelayers import CapsuleLayer, PrimaryCap, Length, Mask
 
-K.set_image_data_format('channels_last')
+# K.set_image_data_format('channels_last')
 
 
 def CapsNet(input_shape, n_class, num_routing):
@@ -89,7 +72,7 @@ def train(model, data, args):
     :return: The trained model
     """
     # unpacking the data
-    (x_train, y_train), (x_test, y_test) = data
+    x_train, y_train, x_test, y_test = data
 
     # callbacks
     log = callbacks.CSVLogger(args.save_dir + '/log.csv')
@@ -158,16 +141,19 @@ def test(model, data):
     plt.show()
 
 
-def load_mnist():
+def load_covid():
     # the data, shuffled and split between train and test sets
-    from keras.datasets import mnist, fashion_mnist
-    (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+    x_train = np.load("x_train.npy")
+    x_train = np.expand_dims(x_train, axis=3)
+    y_train = np.load("y_train.npy")
+    y_train = to_categorical(y_train, num_classes=2)
+    x_test = np.load("x_test.npy")
+    x_test = np.expand_dims(x_test, axis=3)
+    y_test = np.load("y_test.npy")
+    y_test = to_categorical(y_test, num_classes=2)
 
-    x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.
-    x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.
-    y_train = to_categorical(y_train.astype('float32'))
-    y_test = to_categorical(y_test.astype('float32'))
-    return (x_train, y_train), (x_test, y_test)
+    
+    return x_train, y_train, x_test, y_test
 
 
 if __name__ == "__main__":
@@ -194,8 +180,10 @@ if __name__ == "__main__":
         os.makedirs(args.save_dir)
 
     # load data
-    (x_train, y_train), (x_test, y_test) = load_mnist()
-
+    x_train, y_train, x_test, y_test = load_covid()
+       
+    
+       
     # define model
     model, eval_model = CapsNet(input_shape=x_train.shape[1:],
                                 n_class=len(np.unique(np.argmax(y_train, 1))),
@@ -206,7 +194,7 @@ if __name__ == "__main__":
     if args.weights is not None:  # init the model weights with provided one
         model.load_weights(args.weights)
     if args.is_training:
-        train(model=model, data=((x_train, y_train), (x_test, y_test)), args=args)
+        train(model=model, data=(x_train, y_train, x_test, y_test), args=args)
     else:  # as long as weights are given, will run testing
         if args.weights is None:
             print('No weights are provided. Will test using random initialized weights.')
