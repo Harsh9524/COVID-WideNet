@@ -14,4 +14,4 @@ capsulelayers.py inspired from https://github.com/XifengGuo/CapsNet-Keras/blob/m
 train.py inspired from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
 preprocess.py inspired from https://github.com/ShahinSHH/COVID-CAPS 
 
-dataset taken from https://github.com/UCSD-AI4H/COVID-CT 
+The dataset can be downloaded from the following link: https://github.com/UCSD-AI4H/COVID-CT 
