@@ -1,6 +1,6 @@
 # covid_new_dataset
 
-Still in development stage. 
+Official Implementation of the paper - [COVID-WideNet—A capsule network for COVID-19 detection](https://www.sciencedirect.com/science/article/pii/S1568494622002046)
 
 capsulelayers.py taken from https://github.com/XifengGuo/CapsNet-Keras/blob/master/capsulelayers.py \
 train.py taken from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
