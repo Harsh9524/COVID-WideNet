@@ -6,10 +6,12 @@ Abstract - In this paper, we propose a capsule network called COVID-WideNet for 
 
 ![alt text](https://ars.els-cdn.com/content/image/1-s2.0-S1568494622002046-gr2_lrg.jpg)
 
-Official Implementation of the paper - [COVID-WideNet—A capsule network for COVID-19 detection](https://www.sciencedirect.com/science/article/pii/S1568494622002046)
+This repo is the official Implementation of the paper - [COVID-WideNet—A capsule network for COVID-19 detection](https://www.sciencedirect.com/science/article/pii/S1568494622002046)
 
-capsulelayers.py taken from https://github.com/XifengGuo/CapsNet-Keras/blob/master/capsulelayers.py \
-train.py taken from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
-preprocess.py taken from https://github.com/ShahinSHH/COVID-CAPS 
+Credits:
+
+capsulelayers.py inspired from https://github.com/XifengGuo/CapsNet-Keras/blob/master/capsulelayers.py \
+train.py inspired from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
+preprocess.py inspired from https://github.com/ShahinSHH/COVID-CAPS 
 
 dataset taken from https://github.com/UCSD-AI4H/COVID-CT 
