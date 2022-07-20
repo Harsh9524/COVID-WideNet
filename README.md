@@ -16,7 +16,11 @@ capsulelayers.py inspired from https://github.com/XifengGuo/CapsNet-Keras/blob/m
 train.py inspired from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
 preprocess.py inspired from https://github.com/ShahinSHH/COVID-CAPS 
 
-The dataset can be downloaded from the following link: https://github.com/UCSD-AI4H/COVID-CT 
+
+Dataset: COVIDx
+An open access benchmark dataset comprising of 13,975 CXR images across 13,870 patient cases, with the largest number of publicly available COVID-19 positive cases to the best of the authors' knowledge.
+
+The dataset can be downloaded from the following link: https://paperswithcode.com/dataset/covidx
 
 ### Citation
 
