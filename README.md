@@ -1,6 +1,6 @@
 # COVID-WideNet—A capsule network for COVID-19 detection
 ![Python 3.8](https://img.shields.io/badge/python-3.8-green.svg) 
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/covid-widenet-a-capsule-network-for-covid-19/covid-19-diagnosis-on-covid-ct)](https://paperswithcode.com/sota/covid-19-diagnosis-on-covid-ct?p=covid-widenet-a-capsule-network-for-covid-19)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/covid-widenet-a-capsule-network-for-covid-19/covid-19-diagnosis-on-covidx)](https://paperswithcode.com/sota/covid-19-diagnosis-on-covidx?p=covid-widenet-a-capsule-network-for-covid-19)
 
 🏆 SOTA for COVID-19 Diagnosis on COVID-CT (AUC metric) check out [papers with code](https://paperswithcode.com/paper/covid-widenet-a-capsule-network-for-covid-19)
 
