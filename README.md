@@ -17,3 +17,17 @@ train.py inspired from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
 preprocess.py inspired from https://github.com/ShahinSHH/COVID-CAPS 
 
 The dataset can be downloaded from the following link: https://github.com/UCSD-AI4H/COVID-CT 
+
+### Citation
+
+```commandline
+@article{gupta2022covid,
+  title={COVID-WideNet—A capsule network for COVID-19 detection},
+  author={Gupta, PK and Siddiqui, Mohammad Khubeb and Huang, Xiaodi and Morales-Menendez, Ruben and Pawar, Harsh and Terashima-Marin, Hugo and Wajid, Mohammad Saif},
+  journal={Applied Soft Computing},
+  volume={122},
+  pages={108780},
+  year={2022},
+  publisher={Elsevier}
+}
+```
