@@ -10,12 +10,6 @@ Abstract - In this paper, we propose a capsule network called COVID-WideNet for 
 
 This repo is the official Implementation of the paper - [COVID-WideNet—A capsule network for COVID-19 detection](https://www.sciencedirect.com/science/article/pii/S1568494622002046)
 
-Credits:
-
-capsulelayers.py inspired from https://github.com/XifengGuo/CapsNet-Keras/blob/master/capsulelayers.py \
-train.py inspired from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
-preprocess.py inspired from https://github.com/ShahinSHH/COVID-CAPS 
-
 
 ## Dataset: COVIDx 
 An open access benchmark dataset comprising of 13,975 CXR images across 13,870 patient cases, with the largest number of publicly available COVID-19 positive cases to the best of the authors' knowledge. 
@@ -35,3 +29,9 @@ The dataset can be downloaded from the following link: https://paperswithcode.co
   publisher={Elsevier}
 }
 ```
+
+Base Code Inspiration:
+
+capsulelayers.py inspired from https://github.com/XifengGuo/CapsNet-Keras/blob/master/capsulelayers.py \
+train.py inspired from https://github.com/changspencer/Tumor-CapsNet/issues/3 \
+preprocess.py inspired from https://github.com/ShahinSHH/COVID-CAPS 
