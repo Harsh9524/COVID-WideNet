@@ -2,7 +2,7 @@
 ![Python 3.8](https://img.shields.io/badge/python-3.8-green.svg) 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/covid-widenet-a-capsule-network-for-covid-19/covid-19-diagnosis-on-covidx)](https://paperswithcode.com/sota/covid-19-diagnosis-on-covidx?p=covid-widenet-a-capsule-network-for-covid-19)
 
-🏆 SOTA for COVID-19 Diagnosis on COVID-CT (AUC metric) check out [papers with code](https://paperswithcode.com/paper/covid-widenet-a-capsule-network-for-covid-19)
+🏆 SOTA for COVID-19 Diagnosis on COVIDx (AUC metric) check out [papers with code](https://paperswithcode.com/paper/covid-widenet-a-capsule-network-for-covid-19)
 
 Abstract - In this paper, we propose a capsule network called COVID-WideNet for diagnosing COVID-19 cases using Chest X-ray (CXR) images. Experimental results have demonstrated that a discriminative trained, multi-layer capsule network achieves state-of-the-art performance on the COVIDx dataset. In particular, COVID-WideNet performs better than any other CNN based approaches for the diagnosis of COVID-19 infected patients. Further, the proposed COVID-WideNet has the number of trainable parameters that is 20 times less than that of other CNN based models. This results in a fast and efficient diagnosing COVID-19 symptoms, and with achieving the 0.95 of Area Under Curve (AUC), 91% of accuracy, sensitivity and specificity, respectively. This may also assist radiologists to detect COVID and its variant like delta.
 
