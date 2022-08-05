@@ -1,7 +1,7 @@
 # COVID-WideNet—A capsule network for COVID-19 detection
 ![Python 3.8](https://img.shields.io/badge/python-3.8-green.svg) 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/covid-widenet-a-capsule-network-for-covid-19/covid-19-diagnosis-on-covidx)](https://paperswithcode.com/sota/covid-19-diagnosis-on-covidx?p=covid-widenet-a-capsule-network-for-covid-19)
-[![harshpanwar](https://img.shields.io/twitter/follow/harshpanwar?style=social&logo=twitter)](https://mobile.twitter.com/harsh__panwar)
+[![harshpanwar](https://img.shields.io/twitter/follow/harsh__panwar?style=social)](https://mobile.twitter.com/harsh__panwar)
 
 This repo is the official Implementation of the paper - [COVID-WideNet—A capsule network for COVID-19 detection](https://www.sciencedirect.com/science/article/pii/S1568494622002046)
 
